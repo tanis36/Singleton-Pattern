@@ -1,5 +1,4 @@
 #include <iostream>
-#include <memory>
 #include <mutex>
 
 // Class Log
@@ -7,14 +6,10 @@ class Log {
 public:
     // Get instance of Log
     static Log& getInstance() {
-        // Lock guard
-        std::lock_guard<std::mutex> lock(mutex);
-        // IF there is no instance, create instance
-        if (!instance) {
-            instance = std::make_unique<Log>();
-        }
+        // Create a static local instance
+        static Log instance;
         // Return the instance
-        return *instance;
+        return instance;
     }
 
     // Log a message
@@ -28,18 +23,21 @@ public:
     Log& operator=(const Log&) = delete;
 
 private:
-    // Instance of the Log
-    static std::unique_ptr<Log> instance;
-    // Mutex for thread safety
-    static std::mutex mutex;
     // Private constructor to prevent instantiation
     Log() = default;
 };
 
-// Initialize static Log members
-std::unique_ptr<Log> Log::instance = nullptr;
-std::mutex Log::mutex;
-
+// Main
 int main() {
-    
+    // Initialize log1 to be the instance of Log
+    Log& log1 = Log::getInstance();
+    // Log a message to log1
+    log1.log("Hello World!");
+
+    // Initialize log2 to be the instance of Log
+    Log& log2 = Log::getInstance();
+    // Log a message to log2; it will be to the same instance
+    log2.log("Same Instance!");
+
+    return 0;
 }
