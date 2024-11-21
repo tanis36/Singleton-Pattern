@@ -36,6 +36,10 @@ private:
     Log() = default;
 };
 
+// Initialize static Log members
+std::unique_ptr<Log> Log::instance = nullptr;
+std::mutex Log::mutex;
+
 int main() {
     
 }
