@@ -1,5 +1,4 @@
 #include <iostream>
-#include <mutex>
 
 // Class Log
 class Log {
